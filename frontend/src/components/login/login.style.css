@@ -1,0 +1,99 @@
+
+.login{
+  background: #242424 url("../../assets/login/login-bg.png") no-repeat;
+  background-size: cover ;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login__form--container {
+  width: max(300px, 25%);
+  max-width: 500px;
+  background-color: var(--form-bg-color);
+  box-shadow: 0 4px 10px 0 rgba(87,87,87,0.50);
+  border-radius: 20px;
+
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+
+.form-icon{
+  width: 30px;
+  position: absolute;
+  align-self: center;
+  justify-self: self-start;
+  padding-left: 5px;
+}
+
+.form-icon--main{
+  width: 100px;
+  margin-block: 30px;
+}
+
+.login__form--header{
+  color: white;
+  font-family: "October Crow", sans-serif;
+  margin-bottom: 30px;
+}
+
+.login__button{
+  background: #BC4E25;
+  border-radius: 8px;
+  font-family: "October Crow", sans-serif;
+  padding: 10px;
+  width: 30%;
+  border: none;
+  color: white;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.login__button:hover{
+
+  background-color: #d24211;
+}
+.login__button-footer{
+  background: #393939;
+  border-radius: 8px;
+  font-family: "October Crow", sans-serif;
+  padding: 10px;
+  width: 30%;
+  border: none;
+  color: white;
+  font-size: 20px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  margin-block: 30px;
+}
+
+.login__button-footer:hover{
+  background-color: darkred;
+}
+
+.login__form--footer{
+  color: white;
+  font-family: "October Crow", sans-serif;
+  margin-top: 40px;
+}
+
+.login__form--footer-text{
+  color: white;
+  font-family: "Hallowen inline", sans-serif;
+  margin-top: 30px;
+  text-align: center;
+  padding-inline: 40px;
+  line-height: 35px;
+}
+
+
+
