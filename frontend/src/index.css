@@ -1,4 +1,6 @@
 @import './components/login/login.style.css';
+@import './components/navbar/navbar.style.css';
+@import './components/home/home.style.css';
 @font-face {
   font-family: "October Crow";
   src: url("./assets/fonts/OctoberCrow.ttf") format("truetype");
@@ -10,6 +12,7 @@
 }
 :root {
   --form-bg-color: rgba(0, 0, 0, 0.3);
+  --main-button-color: #d24211;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -25,6 +28,7 @@
 
 body {
   min-height: 100vh;
+  background-color: #393939;
 }
 
 form{
@@ -48,21 +52,35 @@ form{
   border: 1px solid #979797;
   border-radius: 8px;
   height: 40px;
-  padding: 5px 5px 5px 30px;
+  padding: 5px 5px 5px 35px;
   outline: none;
   caret-color: red;
-color: ghostwhite;
-width: 100%;
-
+  color: ghostwhite;
+  width: 100%;
+  font-size: 16px;
 }
 
 .general-input::placeholder{
   color: rgba(255, 255, 255, 0.72);
-
+  font-family: "Hallowen inline", sans-serif;
 }
 
+.not-found__container{
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+}
 
-
+.not-found__container > img {
+  width: 400px
+}
+.not-found__container > h1{
+  color: white;
+  font-family: October Crow, sans-serif;
+  font-size: 40px;
+  text-align: center;
+  padding-top: 2rem;
+}
 
 
 
