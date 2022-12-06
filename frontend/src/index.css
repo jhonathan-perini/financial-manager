@@ -1,6 +1,7 @@
 @import './components/login/login.style.css';
 @import './components/navbar/navbar.style.css';
 @import './components/home/home.style.css';
+@import './components/about/about.style.css';
 @font-face {
   font-family: "October Crow";
   src: url("./assets/fonts/OctoberCrow.ttf") format("truetype");

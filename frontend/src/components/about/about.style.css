@@ -1,0 +1,34 @@
+.about__container{
+    display: flex;
+    padding-block: 2rem;
+    flex-direction: column;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.about__image{
+    margin: 30px auto;
+    width: 350px;
+
+}
+
+.about__container > p{
+    font-family: October Crow, sans-serif;
+    font-size: 40px;
+    line-height: 90px;
+    text-align: center;
+    color: white;
+}
+
+.about-form__container{
+    background: #323232;
+    border-radius: 40px;
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+.about-form__icon{
+    width: 400px;
+    margin: 40px 80px;
+}
