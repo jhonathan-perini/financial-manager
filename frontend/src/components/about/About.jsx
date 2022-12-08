@@ -6,8 +6,8 @@ export default function About(){
         <div className="about__container">
             <img src={monster} alt="pink monster showing your tongue with three eyes" className="about__image"/>
             <p>Hey</p>
-            <p>Thank you for support our application.</p>
-            <p>Its purpouse is to be a seasonal themed app adapting in response for some holiday</p>
+            <p>Thank you for supporting our application.</p>
+            <p>Its purpose is to be a seasonal themed app adapting in response for some holiday</p>
             <p>We hope you enjoy</p>
             <p>If you have something to say please feel free to let us know using the form below</p>
             <div className="about-form__container">

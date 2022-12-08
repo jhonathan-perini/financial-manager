@@ -1,5 +1,14 @@
-import express from "express"
-const app = express()
+import app from "../app.js";
+import {Router} from "express";
+import {getAllExpenses} from "./expenses.controller.js";
+
+//ROTAS CRUD
+
+const expensesRouter = Router()
+
+expensesRouter.route('/expenses').get(getAllExpenses)
+
+
 
 app.get("/",function(req,res){
     res.send("Essa é a pág de welcome")
@@ -24,3 +33,6 @@ app.get("/usermenu",function(req,res){
 app.listen(2001, function(req,res){
     console.log("Rodando")
 })
+
+
+export default expensesRouter
