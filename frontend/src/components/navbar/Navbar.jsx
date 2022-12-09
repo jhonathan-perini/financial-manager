@@ -11,6 +11,9 @@ export default function Navbar(){
                     <Link to="/expenses">Expenses</Link>
                 </li>
                 <li className="nav__item">
+                    <Link to="/dashboard">Dashboard</Link>
+                </li>
+                <li className="nav__item">
                     <Link to="/about">About</Link>
                 </li>
             </ul>

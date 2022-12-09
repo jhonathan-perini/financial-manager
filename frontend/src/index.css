@@ -3,6 +3,8 @@
 @import './components/home/home.style.css';
 @import './components/about/about.style.css';
 @import './components/expenses/expenses.style.css';
+@import "react-datepicker/dist/react-datepicker.css";
+
 @font-face {
   font-family: "October Crow";
   src: url("./assets/fonts/OctoberCrow.ttf") format("truetype");

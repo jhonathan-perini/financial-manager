@@ -10,11 +10,101 @@
     padding: 2rem;
 }
 
-.expenses__view--header > a{
-    text-decoration: none;
-    margin: 2rem;
+.expenses__view--header {
+    display: flex;
+    flex-direction: column;
+
 }
 
 
+.expenses__view--header > a{
+    text-decoration: none;
+    margin: 2rem;
+   width: max(200px, 10%);
+    max-width: 250px;
+}
 
+.expense__card{
+    background-color: rgba(197, 197, 197, 0.62);
+    margin: 2rem;
+    display: grid;
+    grid-template-areas: "expenseCategory expenseName expenseValue"
+"expenseCategory expenseName expenseDate";
+    grid-template-columns: 0.3fr 1fr 0.5fr;
+    align-items: center;
+    border-radius: 14px;
+    padding: 1.5rem;
+    width: max(400px, 90%);
+    max-width: 500px;
+    transition: all 0.3s ease-in-out;
+}
 
+.expense__card:hover{
+   scale: 1.1;
+    box-shadow: 0 0 12px 2px rgba(206, 206, 206, 0.1);
+    background-color: rgba(197, 197, 197, 0.92);
+
+}
+
+.expense__card > div:nth-child(1){
+    grid-area: expenseName;
+    grid-row: 1 /span 2;
+    color: black;
+    font-family: "Hallowen inline", sans-serif;
+    font-size: 18px;
+    padding-inline: 1rem;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.expense__card > p:nth-child(2){
+    grid-area: expenseDate;
+    align-self: end;
+    color: black;
+    font-family: "Hallowen inline", sans-serif;
+    font-size: 15px;
+    padding-inline: 1rem;
+    justify-self: end;
+}
+.expense__card > p:nth-child(3){
+    grid-area: expenseValue;
+    color: black;
+    font-family: "October Crow", sans-serif;
+    font-size: 30px;
+    padding-inline: 1rem;
+    justify-self: end;
+}
+.expense__card > img:nth-child(4){
+    grid-area: expenseCategory;
+    grid-row: 1 /span 2;
+}
+
+.expense-category__icon{
+    width: 70px;
+}
+.expenses__container{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.filter__bar{
+    width: 100%;
+    height: 30px;
+    background-color: #484848;
+    display: flex;
+    align-items: center;
+    border-radius: 20px;
+    padding-top: 4rem;
+    padding-bottom: 3rem;
+    padding-inline: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.filter__bar > div {
+    margin-right: 1rem;
+}
+
+.filter__bar > div:last-child {
+    margin-right: 0;
+}

@@ -4,7 +4,8 @@ import doll from '../../assets/expenses/voodoo-doll.svg'
 import Select from 'react-select'
 import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import api from "../../api/api.js";
-
+import categoryImages from "../../assets/categoryEnum";
+import DatePicker from 'react-datepicker'
 
 const dropdownStyle = {
     control: (provided, ) => ({
@@ -60,7 +61,7 @@ export default function Expenses (){
     }
     const [dialog, setDialog] = useState(false)
     const [expense, setExpense] = useState(initialState)
-    const categoryOptions = [{label:'food', value: 'food'}]
+    const categoryOptions = [{label:'food'}]
     const client = useQueryClient()
     const addExpense = useMutation( async (expense) => {
         return await api.post('/expenses', expense)
@@ -76,15 +77,18 @@ export default function Expenses (){
     })
 
 
-
-
     function handleDialog(){
         setDialog(!dialog)
     }
 
-    function handleInput(e) {
-        setExpense((prevState) => ({...prevState, [e.target.name]: e.target.value}))
-        console.log(expense)
+    function handleInput(e, date) {
+        if(date === 'date'){
+            setExpense((prevState) => ({...prevState, [date]: e}))
+        } else {
+            setExpense((prevState) => ({...prevState, [e.target.name]: e.target.value}))
+        }
+
+        console.log(e.toLocaleDateString())
     }
 
     function handleSelect(e, name) {
@@ -96,6 +100,12 @@ export default function Expenses (){
         addExpense.mutate(expense)
         setDialog(false)
         setExpense(initialState)
+    }
+
+    function getCategoryImage(imageName){
+        console.log(imageName)
+        return <img className="expense-category__icon" src={`../../../src/assets/expenses/${categoryImages[imageName.toUpperCase()]}.svg`} alt={`${imageName} icon`} title={imageName}/>
+
     }
     return (
         <>
@@ -132,9 +142,34 @@ export default function Expenses (){
                 <h1>Hello! Wanna keep track of something? </h1>
                 <a className="login__button" onClick={handleDialog}>Keep track</a>
             </div>
+            <div className="filter__bar">
+
+                <div className="input-container">MM
+                </div>
+                <div className="input-container">
+
+                    <DatePicker selected={expense?.date} dateFormat="dd/MM/yyyy"  locale="pt-BR" className="general-input form__input" onChange={(date) => handleInput(date, 'date')} placeholderText="dd/mm/yyyy"  />
+                </div>
+                <div className="input-container">
+                    <input type="text" className="general-input form__input" value={expense.name} onChange={handleInput} placeholder="Name" name="name"/>
+                </div>
+                <div className="input-container">
+                    <input type="string" className="general-input form__input" value={expense.value} onChange={handleInput} placeholder="Value" name="value"/>
+
+                </div>
+            </div>
             <div className="expenses__container">
                 {allExpenses?.map(expense => {
-                    return <p key={expense._id}>{expense?.name}</p>
+                    return <div className="expense__card" key={expense._id}>
+                        <div>      {expense?.name}</div>
+
+                        <p >{expense?.date}</p>
+                        <p >{expense?.value}</p>
+                        {getCategoryImage(expense?.category?.label)}
+                    </div>
+
+
+
                 })}
             </div>
         </section>
