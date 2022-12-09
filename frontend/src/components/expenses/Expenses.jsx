@@ -8,6 +8,7 @@ import categoryImages from "../../assets/categoryEnum";
 import DatePicker from 'react-datepicker'
 import { registerLocale, setDefaultLocale } from  "react-datepicker";
 import pt from 'date-fns/locale/pt-BR';
+import {all} from "axios";
 registerLocale('pt-BR', pt)
 const dropdownStyle = {
     control: (provided, ) => ({
@@ -79,6 +80,7 @@ export default function Expenses (){
     const [dialog, setDialog] = useState(false)
     const [expense, setExpense] = useState(initialState)
     const [filter, setFilter] = useState(initialStateFilter)
+    const [filteredExpenses, setFilteresExpenses] = useState([])
     const categoryOptions = [{label:'food', value: 'food'}, {label:'clothes', value: 'clothes'}, {label:'restaurant', value: 'restaurant'}]
     const client = useQueryClient()
     const addExpense = useMutation( async (expense) => {
@@ -94,9 +96,10 @@ export default function Expenses (){
         return  response.data.response
     })
 
-useEffect(() => {
 
-},[filter])
+
+
+
     function handleDialog(){
         setDialog(!dialog)
     }
@@ -117,7 +120,6 @@ useEffect(() => {
         } else {
             setFilter((prevState) => ({...prevState, [e.target.name]: e.target.value}))
         }
-
         console.log(e.toLocaleDateString())
     }
 
@@ -142,8 +144,11 @@ useEffect(() => {
         return <img className="expense-category__icon" src={`../../../src/assets/expenses/${categoryImages[imageName.toUpperCase()]}.svg`} alt={`${imageName} icon`} title={imageName}/>
 
     }
-
-
+async function abc(){
+        const a = await api.get('/expenses?category=food')
+    return a.data.response
+}
+abc().then(res => console.log(res))
     return (
         <>
             {dialog && <div className="overlay"/>}
@@ -206,7 +211,7 @@ useEffect(() => {
 
             </div>
             <div className="expenses__container">
-                {allExpenses?.map(expense => {
+                { allExpenses?.map(expense => {
                     return <div className="expense__card" key={expense._id}>
                         <div>      {expense?.name}</div>
 

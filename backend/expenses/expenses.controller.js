@@ -4,7 +4,8 @@ import {ObjectId} from "mongodb";
 const collection=mongoClient.collection('expenses')
 
 export async function getAllExpenses(req, res){
-
+    const params = req.query
+    console.log(params)
     const response = await  collection.find({}).toArray()
 
     res.status(201).send({
