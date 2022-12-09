@@ -90,21 +90,38 @@
 
 .filter__bar{
     width: 100%;
-    height: 30px;
     background-color: #484848;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     border-radius: 20px;
-    padding-top: 4rem;
-    padding-bottom: 3rem;
-    padding-inline: 1rem;
+
     border: 1px solid rgba(255, 255, 255, 0.16);
 }
 
-.filter__bar > div {
+.filter__inputs > div {
     margin-right: 1rem;
 }
 
 .filter__bar > div:last-child {
     margin-right: 0;
+}
+
+.filter__inputs{
+    display: flex;
+    padding: 0 1rem 0 1rem;
+}
+
+.filter__bar > h2 {
+    padding: 1rem;
+    font-family: "Hallowen inline",sans-serif;
+    color: white;
+    font-size: 20px;
+}
+
+.filter__inputs > .input-container > input {
+    padding-left: 1rem;
+}
+
+.filter__inputs .react-datepicker__input-container .general-input {
+padding-left: 1rem;
 }

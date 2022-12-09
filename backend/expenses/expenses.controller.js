@@ -28,6 +28,7 @@ export async function updateExpense(req, res){
 export async function createExpense(req, res){
 
     const expense = req.body
+    expense.category = expense.category.label
     console.log(expense)
     await collection.insertOne(expense)
 
