@@ -1,0 +1,20 @@
+.expenses__view{
+    width: 90%;
+    margin: 0 auto;
+}
+
+.expenses__view--header > h1{
+    font-size: 40px;
+    color: white;
+    font-family: October Crow, sans-serif;
+    padding: 2rem;
+}
+
+.expenses__view--header > a{
+    text-decoration: none;
+    margin: 2rem;
+}
+
+
+
+

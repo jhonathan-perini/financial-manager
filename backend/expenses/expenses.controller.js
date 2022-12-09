@@ -27,8 +27,8 @@ export async function updateExpense(req, res){
 
 export async function createExpense(req, res){
 
-    const {expense} = req.body
-
+    const expense = req.body
+    console.log(expense)
     await collection.insertOne(expense)
 
     res.status(201).send({

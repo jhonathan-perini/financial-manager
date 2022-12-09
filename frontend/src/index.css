@@ -2,6 +2,7 @@
 @import './components/navbar/navbar.style.css';
 @import './components/home/home.style.css';
 @import './components/about/about.style.css';
+@import './components/expenses/expenses.style.css';
 @font-face {
   font-family: "October Crow";
   src: url("./assets/fonts/OctoberCrow.ttf") format("truetype");
@@ -81,6 +82,108 @@ form{
   font-size: 40px;
   text-align: center;
   padding-top: 2rem;
+}
+
+.dialog{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max(400px, 40%);
+  max-width: 700px;
+  background-color: rgba(255, 255, 255, 0.22);
+
+  border-radius: 2rem;
+  z-index: 3;
+  display: grid;
+  grid-template-areas: "dialogHeader"
+"dialogContent"
+"dialogFooter";
+  grid-template-rows: 0.2fr 1fr 0.2fr;
+  scale: 0;
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(.25,-0.38,.65,1.38) ;
+  transform-origin: top left;
+
+}
+.overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  background-color: rgba(57, 57, 57, 0.82);
+}
+.dialog__header{
+  grid-area: dialogHeader;
+  display: flex;
+  justify-content: center;
+  padding-top: 2rem;
+  font-size: 30px;
+  color: white;
+  font-family: "Hallowen inline", sans-serif;
+}
+
+.dialog__content{
+  grid-area: dialogContent;
+  padding-top: 2rem;
+}
+
+.dialog__footer{
+  grid-area: dialogFooter;
+  display: flex;
+  justify-content: flex-end;
+  align-items: end;
+  margin-right: 2rem;
+}
+.confirm__button {
+  background-color: #1d501d;
+  width: 20%;
+  cursor: pointer;
+}
+
+.confirm__button:hover {
+  background-color: #236923;
+}
+
+.cancel__button {
+  background-color: darkred;
+  width: 20%;
+  margin-right: 1rem;
+  cursor: pointer;
+}
+
+.cancel__button:hover {
+  background-color: #b00202;
+
+}
+
+
+.expenses__form input{
+  padding-left: 1rem
+}
+
+.open {
+  scale: 1;
+  opacity: 1;
+
+}
+
+.dialog__image{
+  width: 250px;
+  margin-left: 2rem;
+}
+
+.dialog__container{
+  display: flex;
+}
+
+
+.dialog__container > form > .input-container {
+ width: 80%;
+
 }
 
 
