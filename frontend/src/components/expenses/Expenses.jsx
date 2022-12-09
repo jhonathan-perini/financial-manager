@@ -2,8 +2,9 @@ import Dialog from "../dialog/Dialog";
 import {useState} from "react";
 import doll from '../../assets/expenses/voodoo-doll.svg'
 import Select from 'react-select'
-import {useMutation, useQueryClient} from "@tanstack/react-query";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import api from "../../api/api.js";
+
 
 const dropdownStyle = {
     control: (provided, ) => ({
@@ -69,6 +70,12 @@ export default function Expenses (){
         }
     })
 
+    const {data: allExpenses} = useQuery(["expenses"], async () => {
+        const response = await api.get("/expenses")
+        return  response.data.response
+    })
+
+
 
 
     function handleDialog(){
@@ -126,7 +133,9 @@ export default function Expenses (){
                 <a className="login__button" onClick={handleDialog}>Keep track</a>
             </div>
             <div className="expenses__container">
-
+                {allExpenses?.map(expense => {
+                    return <p key={expense._id}>{expense?.name}</p>
+                })}
             </div>
         </section>
         </>
