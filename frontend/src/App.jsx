@@ -4,6 +4,7 @@ import Home from "./components/home/Home";
 import Navbar from "./components/navbar/Navbar";
 import About from "./components/about/About";
 import Expenses from "./components/expenses/Expenses";
+import Dashboard from "./components/dashboard/Dashboard";
 
 const WithoutNav = () => <Outlet/>
 const WithNav = () => {
@@ -27,6 +28,7 @@ function App() {
                   <Route path="/home" element={<Home />} />
                   <Route path="/about" element={<About />} />
                   <Route path="/expenses" element={<Expenses />} />
+                  <Route path="/dashboard" element={<Dashboard />} />
               </Route>
           </Routes>
       </>

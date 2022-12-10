@@ -8,8 +8,23 @@ import categoryImages from "../../assets/categoryEnum";
 import DatePicker from 'react-datepicker'
 import { registerLocale, setDefaultLocale } from  "react-datepicker";
 import pt from 'date-fns/locale/pt-BR';
-import {all} from "axios";
+import magnify from '../../assets/expenses/magnifying-glass.svg'
+import filterIcon from '../../assets/expenses/filter.svg'
+import NotFound from "../NotFound";
+import MenuExpense from "./MenuExpense";
+import Loading from "../Loading";
+import { ToastContainer, toast } from 'react-toastify';
 registerLocale('pt-BR', pt)
+
+export function getCategoryImage(imageName){
+    console.log(imageName)
+    return <img className="expense-category__icon" src={`../../../src/assets/expenses/${categoryImages[imageName.toUpperCase()]}.svg`} alt={`${imageName} icon`} title={imageName}/>
+
+}
+export const categoryOptions = [{label:'food', value: 'food'},{label:'medication', value: 'medication'},{label:'others', value: 'others'}, {label:'wellness', value: 'wellness'}, {label:'clothes', value: 'clothes'}, {label:'restaurant', value: 'restaurant'}, {label:'health', value: 'health'}]
+export const categoryOptionsFilter = [{label:'income', value: 'income'},{label:'food', value: 'food'},{label:'medication', value: 'medication'},{label:'others', value: 'others'}, {label:'wellness', value: 'wellness'}, {label:'clothes', value: 'clothes'}, {label:'restaurant', value: 'restaurant'}, {label:'health', value: 'health'}]
+export const typeOptions = [{label:'expense', value: 'expense'},{label:'income', value: 'income'}]
+
 const dropdownStyle = {
     control: (provided, ) => ({
         ...provided,
@@ -67,12 +82,13 @@ export default function Expenses (){
         value: '',
         category: null,
         date: '',
-        description: ''
+        type: ''
     }
 
     const initialStateFilter = {
         name: '',
-        value: '',
+        minvalue: '',
+        maxvalue: '',
         category: null,
         date: '',
 
@@ -80,21 +96,41 @@ export default function Expenses (){
     const [dialog, setDialog] = useState(false)
     const [expense, setExpense] = useState(initialState)
     const [filter, setFilter] = useState(initialStateFilter)
-    const [filteredExpenses, setFilteresExpenses] = useState([])
-    const categoryOptions = [{label:'food', value: 'food'}, {label:'clothes', value: 'clothes'}, {label:'restaurant', value: 'restaurant'}]
+    const [filteredExpenses, setFilteredExpenses] = useState([])
     const client = useQueryClient()
-    const addExpense = useMutation( async (expense) => {
+    const {mutate: addExpense, isLoading: createLoading} = useMutation( async (expense) => {
         return await api.post('/expenses', expense)
+    }, {
+        onSuccess: async () => {
+            await client.invalidateQueries(["expenses"])
+            toast.success('The transaction was created.')
+        },
+        onError: () => {
+            toast.error('Something went bad :(')
+        }
+    })
+    const  {mutate: deleteExpense, isLoading: deleteLoading} = useMutation( async (expense) => {
+        return await api.delete('/expenses/'+expense)
+    }, {
+        onSuccess: async () => {
+            await client.invalidateQueries(["expenses"])
+            toast.success('The transaction was deleted.')
+        },
+        onError: () => {
+            toast.error('Something went bad :(')
+        }
+    })
+
+    const updateExpense = useMutation( async (expense) => {
+        return await api.post('/expenses/'+expense._id, expense)
     }, {
         onSuccess: async () => {
             await client.invalidateQueries(["expenses"])
         }
     })
 
-    const {data: allExpenses} = useQuery(["expenses"], async () => {
-        const response = await api.get("/expenses")
-        return  response.data.response
-    })
+
+
 
 
 
@@ -111,7 +147,7 @@ export default function Expenses (){
             setExpense((prevState) => ({...prevState, [e.target.name]: e.target.value}))
         }
 
-        console.log(e.toLocaleDateString())
+
     }
 
     function handleInputFilter(e, date) {
@@ -120,7 +156,7 @@ export default function Expenses (){
         } else {
             setFilter((prevState) => ({...prevState, [e.target.name]: e.target.value}))
         }
-        console.log(e.toLocaleDateString())
+
     }
 
     function handleSelect(e, name) {
@@ -134,25 +170,56 @@ export default function Expenses (){
     }
 
     function createExpense(){
-        addExpense.mutate(expense)
-        setDialog(false)
-        setExpense(initialState)
+
+        if(expense.name.trim().length > 0 && expense.date && expense.type?.label ){
+            if(expense.type.label === 'income'){
+                addExpense(expense)
+                setDialog(false)
+                setExpense(initialState)
+            } else if (expense.category?.label.length > 0)  {
+                addExpense(expense)
+                setDialog(false)
+                setExpense(initialState)
+            } else {
+                toast.error('Please, fill all the inputs.', )
+            }
+        } else {
+            toast.error('Please, fill all the inputs.')
+        }
+
     }
 
-    function getCategoryImage(imageName){
-        console.log(imageName)
-        return <img className="expense-category__icon" src={`../../../src/assets/expenses/${categoryImages[imageName.toUpperCase()]}.svg`} alt={`${imageName} icon`} title={imageName}/>
 
-    }
-async function abc(){
-        const a = await api.get('/expenses?category=food')
-    return a.data.response
+function getCategories(categories){
+        return categories.map(el => el.label)
 }
-abc().then(res => console.log(res))
+    const {data: allExpenses2, isLoading: allExpensesLoading} = useQuery(["expenses", filter], async () => {
+        let uri = "/expenses?"
+        let date = filter?.date ? `date=${filter.date}&` : ''
+        let minV = filter?.minvalue > 0 ? 'minValue=' + filter.minvalue + '&' : ''
+        let maxV = filter?.maxvalue > 0 ? 'maxValue=' + filter.maxvalue + '&' : ''
+        let categories = filter?.category?.length > 0 ? 'category=' + getCategories(filter.category)+ '&' : ''
+     uri = uri.concat(date, minV,maxV, categories)
+        uri = uri.slice(0, uri.length -1)
+
+        console.log(uri)
+        const response = await api.get(uri)
+        return  response.data.response
+    })
+
+function deleteThisExpense(id){
+        deleteExpense(id)
+}
+
+function clearDialog(){
+        setExpense(initialState)
+    setDialog(false)
+}
     return (
         <>
+            <ToastContainer theme={"dark"} />
             {dialog && <div className="overlay"/>}
-            <Dialog dialogState={{dialog, setDialog}} header={"Create expense"} confirmAction={createExpense} >
+            <Dialog dialogState={{dialog, setDialog}} header={"Create expense"} confirmAction={createExpense} cancelAction={clearDialog} >
                 <div className="dialog__container">
                     <img src={doll} alt="voodoo doll" className="dialog__image"/>
                 <form className="expenses__form">
@@ -164,19 +231,21 @@ abc().then(res => console.log(res))
 
                     </div>
                     <div className="input-container">
+                        <Select options={typeOptions} styles={dropdownStyle} placeholder="Transaction Type" name="type" value={expense.type} onChange={(e) => handleSelect(e,'type')} />
+
+                    </div>
+                    <div className={(!expense.type.label || expense.type.label === 'income')  ? 'hide' : 'input-container'} >
                         <Select options={categoryOptions} styles={dropdownStyle} placeholder="Category" name="category" value={expense.category} onChange={(e) => handleSelect(e,'category')} />
 
                     </div>
+
                     <div className="input-container">
                         <DatePicker selected={expense?.date} dateFormat="dd/MM/yyyy"  locale="pt-BR" className="general-input form__input" onChange={(date) => handleInput(date, 'date')} placeholderText="dd/mm/yyyy"  />
 
 
 
                     </div>
-                    <div className="input-container">
-                        <input type="text" className="general-input form__input" value={expense.description} onChange={handleInput} placeholder="Aditional information" name="description"/>
 
-                    </div>
                 </form>
 
                 </div>
@@ -192,38 +261,40 @@ abc().then(res => console.log(res))
 <h2>Filters</h2>
                 <div className="filter__inputs">
                     <div className="input-container">
-                        <Select options={categoryOptions} isMulti={true} styles={dropdownStyle} placeholder="Category" name="category" value={filter?.category} onChange={(e) => handleSelectFilter(e,'category')} />
+                        <Select options={categoryOptionsFilter} isMulti={true} styles={dropdownStyle} placeholder="Category" name="category" value={filter?.category} onChange={(e) => handleSelectFilter(e,'category')} />
 
                     </div>
                     <div className="input-container">
 
                         <DatePicker selected={filter?.date}  dateFormat="PP"  locale="pt-BR" className="general-input form__input" onChange={(date) => handleInputFilter(date, 'date')} placeholderText="dd/mm/yyyy"  />
                     </div>
+
                     <div className="input-container">
-                        <input type="text" className="general-input form__input" value={filter?.name} onChange={handleInputFilter} placeholder="Name" name="name"/>
-                    </div>
-                    <div className="input-container">
-                        <input type="string" className="general-input form__input" value={filter?.value} onChange={handleInputFilter} placeholder="Value" name="value"/>
+                        <input type="string" className="general-input form__input" value={filter?.minvalue} onChange={handleInputFilter} placeholder="Min Value" name="minvalue"/>
 
                     </div>
-                    <a>Clear</a>
+                    <div className="input-container">
+                        <input type="string" className="general-input form__input" value={filter?.maxvalue} onChange={handleInputFilter} placeholder="Max Value" name="maxvalue"/>
+
+                    </div>
+                    <img src={filterIcon} title="Clear filters" className="filter__bar-icon" alt="filter" onClick={() => setFilter(initialStateFilter)} />
                 </div>
 
             </div>
-            <div className="expenses__container">
-                { allExpenses?.map(expense => {
+            { (allExpensesLoading || deleteLoading || createLoading) ? <Loading/> : <div className="expenses__container">
+                {allExpenses2?.length > 0 ? allExpenses2.map(expense => {
                     return <div className="expense__card" key={expense._id}>
                         <div>      {expense?.name}</div>
 
-                        <p >{new Date(expense?.date).toLocaleDateString('pt-BR')}</p>
-                        <p >{Number(expense?.value).toLocaleString("pt-BR", {style:"currency", currency:"BRL"})}</p>
+                        <p>{expense?.date}</p>
+                        <p>{Number(expense?.value).toLocaleString("pt-BR", {style: "currency", currency: "BRL"})}</p>
                         {getCategoryImage(expense?.category)}
+                        <MenuExpense deleteFunction={deleteThisExpense} expenseId={expense._id}/>
                     </div>
 
 
-
-                })}
-            </div>
+                }) : <NotFound/>}
+            </div>}
         </section>
         </>
     )

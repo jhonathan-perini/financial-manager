@@ -3,7 +3,9 @@
 @import './components/home/home.style.css';
 @import './components/about/about.style.css';
 @import './components/expenses/expenses.style.css';
+@import './components/dashboard/dashboard.style.css';
 @import "react-datepicker/dist/react-datepicker.css";
+@import 'react-toastify/dist/ReactToastify.css';
 
 @font-face {
   font-family: "October Crow";
@@ -29,7 +31,9 @@
   padding: 0;
   margin: 0;
 }
-
+html{
+  font-size: 62.5%
+}
 body {
   min-height: 100vh;
   background-color: #393939;
@@ -54,14 +58,14 @@ form{
 .general-input{
   background: #898989;
   border: 1px solid #979797;
-  border-radius: 8px;
-  height: 40px;
-  padding: 5px 5px 5px 35px;
+  border-radius: 0.8rem;
+  height: 4rem;
+  padding: 0.5rem 0.5rem 0.5rem 3.5rem;
   outline: none;
   caret-color: red;
   color: ghostwhite;
   width: 100%;
-  font-size: 16px;
+  font-size: 1.6rem;
 }
 
 .general-input::placeholder{
@@ -76,12 +80,13 @@ form{
 }
 
 .not-found__container > img {
-  width: 400px
+  width: 40rem;
+  margin-top: 2rem
 }
 .not-found__container > h1{
   color: white;
   font-family: October Crow, sans-serif;
-  font-size: 40px;
+  font-size: 4rem;
   text-align: center;
   padding-top: 2rem;
 }
@@ -91,8 +96,8 @@ form{
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: max(400px, 40%);
-  max-width: 700px;
+  width: max(40rem, 40%);
+  max-width: 70rem;
   background-color: rgba(255, 255, 255, 0.22);
 
   border-radius: 2rem;
@@ -124,7 +129,7 @@ form{
   display: flex;
   justify-content: center;
   padding-top: 2rem;
-  font-size: 30px;
+  font-size: 3rem;
   color: white;
   font-family: "Hallowen inline", sans-serif;
 }
@@ -140,6 +145,7 @@ form{
   justify-content: flex-end;
   align-items: end;
   margin-right: 2rem;
+  margin-bottom: 1rem;
 }
 .confirm__button {
   background-color: #1d501d;
@@ -175,7 +181,7 @@ form{
 }
 
 .dialog__image{
-  width: 250px;
+  width: 25rem;
   margin-left: 2rem;
 }
 
@@ -187,6 +193,24 @@ form{
 .dialog__container > form > .input-container {
  width: 80%;
 
+}
+
+.loading{
+  -webkit-backdrop-filter: blur(5px);
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.loading > img{
+  position: absolute ;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: max(30rem, 30%);
+  max-width: 50rem;
 }
 
 

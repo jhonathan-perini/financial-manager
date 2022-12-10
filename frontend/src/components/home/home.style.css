@@ -1,5 +1,5 @@
 .home__spider, .home__doll, .home__pumpkin{
-    width: 250px
+    width: 25rem
 }
 
 .home__container{
@@ -12,8 +12,6 @@
 "cardContainerIntro doll"
 "cardContainer cardContainer"
 "homeFooter homeFooter";
-
-
 }
 
 .home__header{
@@ -24,21 +22,22 @@
     grid-area: cardContainer;
     display: flex;
     padding-block: 3rem;
+    flex-wrap: wrap;
+    width: 100%;
 }
-.home__header > h1{
 
+.home__header > h1{
     font-family: "October Crow", sans-serif ;
-    font-size: 76px;
+    font-size: 7.6rem;
     color: white;
     align-self: center;
     margin-left: 4rem;
 }
 
-
 .intro-header{
     grid-area: cardContainerIntro;
     font-family: "October Crow", sans-serif ;
-    font-size: 36px;
+    font-size: 3.6rem;
     color: white;
     margin-top: 2rem;
 }

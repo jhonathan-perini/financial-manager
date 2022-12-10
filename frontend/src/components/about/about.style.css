@@ -7,28 +7,23 @@
 }
 
 .about__image{
-    margin: 30px auto;
-    width: 350px;
+    margin: 3rem auto;
+    width: 60rem;
 
 }
-
-.about__container > p{
-    font-family: October Crow, sans-serif;
-    font-size: 40px;
-    line-height: 90px;
+.about__container  div:first-child {
+    background: #323232;
+    border-radius: 5rem;
+    display: flex;
+    padding: 2rem 2rem 8rem 2rem;
+    align-items: center;
+}
+.about__container  div:first-child > div:nth-child(2) > p {
+    font-family: "Hallowen inline",sans-serif;
+    font-size: 4rem;
+    line-height: 7rem;
     text-align: center;
     color: white;
 }
 
-.about-form__container{
-    background: #323232;
-    border-radius: 40px;
-    margin-top: 50px;
-    display: flex;
-    flex-direction: column;
-}
 
-.about-form__icon{
-    width: 400px;
-    margin: 40px 80px;
-}
