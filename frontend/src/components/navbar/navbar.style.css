@@ -25,3 +25,66 @@
     text-decoration: none;
     color: white;
 }
+.skin__dialog{
+    padding-inline: 4rem;
+
+}
+.skin__text h1 {
+    color: white;
+    font-family: "Hallowen inline", sans-serif;
+    font-size: 3rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.skin__text p {
+    color: white;
+    font-family: "Hallowen inline", sans-serif;
+    font-size: 2rem;
+    text-align: center;
+    line-height: 3rem;
+}
+
+.skin__text b {
+    font-family: sans-serif;
+}
+
+.skin__text p:last-child {
+
+    font-size: 3rem;
+    margin-top: 2rem;
+
+}
+.skin__text{
+    padding-block: 2rem;
+}
+.skin__image{
+    width: 100%;
+    opacity: 0.9;
+
+}
+
+.nav__content .dialog{
+    background-color: #212121;
+
+}
+
+.nav__content .dialog{
+    background-color: #212121;
+
+}
+
+.nav__content .dialog__footer > a:first-child{
+   display: none;
+
+}
+
+
+.nav__content .dialog__footer {
+
+
+    justify-content: center;
+
+}
+
+

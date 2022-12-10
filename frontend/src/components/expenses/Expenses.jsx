@@ -32,30 +32,31 @@ const dropdownStyle = {
         width: '100%',
        borderColor: "#898989",
         boxShadow: 'none',
-    borderRadius: '8px',
-        height: '40px',
+    borderRadius: '0.8rem',
+        height: '4rem',
         caretColor: 'red'
     }),
     placeholder: (provided) => ({
         ...provided,
         color: 'rgba(248,248,255,0.70)',
         fontFamily: 'Hallowen inline',
-        paddingLeft: '10px'
+        paddingLeft: '1rem',
+        fontSize: '1.6rem'
     }),
     container: (provided) => ({
         ...provided,
         width: '100%',
-        height: '40px'
+        height: '4rem'
     }),
     menu: (provided) => ({
         ...provided,
         backgroundColor: 'rgba(0,0,0,0.78)',
-        borderRadius: '10px'
+        borderRadius: '1rem'
     }),
     menuList: (provided, ) => ({
         ...provided,
         color: 'ghostwhite',
-        borderRadius: '10px',
+        borderRadius: '1rem',
 
     }),
     option: (provided) => ({
@@ -64,7 +65,7 @@ const dropdownStyle = {
         "&:hover": {
             backgroundColor: "red"
         },
-
+        fontSize: '1.6rem'
 
     }),
     singleValue: (provided) => ({

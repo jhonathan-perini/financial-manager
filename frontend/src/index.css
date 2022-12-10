@@ -32,7 +32,7 @@
   margin: 0;
 }
 html{
-  font-size: 62.5%
+ 
 }
 body {
   min-height: 100vh;
@@ -181,7 +181,7 @@ form{
 }
 
 .dialog__image{
-  width: 25rem;
+  width: 18rem;
   margin-left: 2rem;
 }
 
@@ -213,5 +213,31 @@ form{
   max-width: 50rem;
 }
 
+@media (min-width: 2001px)
+{
+  html{
+    font-size: 80%;
+  }
+}
 
+@media (max-width: 2000px)
+{
+ html{
+   font-size: 70%;
+ }
+}
+
+@media (max-width: 1000px)
+{
+  html{
+    font-size: 50%;
+  }
+}
+
+@media (max-width: 700px)
+{
+  html{
+    font-size: 40%;
+  }
+}
 
