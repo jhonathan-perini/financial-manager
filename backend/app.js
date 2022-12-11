@@ -2,18 +2,13 @@ import express from 'express'
 import cors from 'cors'
 import compression from 'compression'
 import expensesRouter from "./expenses/expenses.routes.js";
-import connectMongoSession from 'connect-mongodb-session';
+
 import  session from 'express-session';
 import authRouter from "./auth/auth.routes.js";
 const app = express()
 const MAX_AGE = 1000 * 60 * 60 * 24
-const MongoDBStore = connectMongoSession(session);
-const URI = `mongodb+srv://financialManager:financialManager@application.u0mkmwi.mongodb.net/?retryWrites=true&w=majority`
 
-const mongoDBstore = new MongoDBStore({
-    uri: URI,
-    collection: 'sessions',
-})
+
 
 app.use(session({
     secret: 'a1s2d3f4g5h6',
@@ -39,8 +34,8 @@ export function requireAuth(req, res, next) {
 
 
 app.use(cors({
-    origin: ['http://localhost:5173', 'http://localhost:5500', 'http://localhost:63342'],
-    credentials: true,
+    origin: ['http://ec2-54-196-192-107.compute-1.amazonaws.com', 'http://localhost:5173'],
+    credentials: true
 }));
 app.use((req,res, next) => {
     console.log(req.session)
