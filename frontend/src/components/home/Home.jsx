@@ -11,14 +11,14 @@ import Loading from "../Loading";
 
 export default function Home(){
     const {data: mainExpenses, isLoading: homeIsLoading} = useQuery(["expensesHome"], async () => {
-        const response = await api.get('/expenses?limit=6')
+        const response = await api.get('/expenses?limit=6', {withCredentials: true})
         return  response.data.response
     })
     return (
         <div className="home__container">
             <div className="home__header">
                 <img src={spider} className="home__spider"  alt="spider"/>
-                <h1>Hey, John</h1>
+                <h1>Hello!</h1>
             </div>
             <h3 className="intro-header">Let’s check your last interactions…</h3>
             <img src={doll} className="home__doll"  alt="doll with needles "/>

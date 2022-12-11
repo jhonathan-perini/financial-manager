@@ -8,7 +8,7 @@ export async function getAllExpenses(req, res){
     let newObjectQuery = []
     let minvalue = {};
     let maxvalue = {};
-
+    newObjectQuery.push({user: req.session.user.email})
     if (params?.minValue && params?.maxValue){
         minvalue =  {value: {$gte: Number(`${params?.minValue}`)}}
         maxvalue = {value: {$lte: Number(`${params?.maxValue}`)}}
@@ -29,11 +29,6 @@ export async function getAllExpenses(req, res){
     }
 
 let finalQUery =  newObjectQuery.length > 0  ? newObjectQuery : [{}]
-
-
-
-    console.log(finalQUery)
-    console.log(params?.limit)
     let response;
     if(params?.limit){
          response = await  collection.find(
@@ -49,7 +44,7 @@ let finalQUery =  newObjectQuery.length > 0  ? newObjectQuery : [{}]
         ).toArray()
     }
 
-console.log(response)
+
     res.status(201).send({
         response
     })
@@ -60,10 +55,15 @@ console.log(response)
 
 export async function updateExpense(req, res){
 
-    const {expense} = req.body
+    const expense = req.body
+    console.log(expense)
     const id = req.params.id
-
-    await collection.updateOne({_id: new ObjectId(id)}, {$set: {expense}})
+    expense.type = expense.type.label
+    expense.type === 'income' ? expense.category = 'income' : expense.category = expense.category.label
+    expense.value = +expense.value
+    expense.date = new Date(expense.date).toLocaleDateString('pt-BR')
+    delete expense._id
+    await collection.updateOne({_id: new ObjectId(id)}, {$set: expense})
 
     res.status(200).send({
         message: 'Your expense was updated.'
@@ -73,12 +73,15 @@ export async function updateExpense(req, res){
 export async function createExpense(req, res){
 
     const expense = req.body
+    console.log(expense.value)
     expense.type = expense.type.label
     console.log(expense.type)
     expense.type === 'income' ? expense.category = 'income' : expense.category = expense.category.label
     expense.value = +expense.value
     expense.date = new Date(expense.date).toLocaleDateString('pt-BR')
-    console.log(expense)
+    expense.user = req.session.user.email
+    console.log(req.session)
+
     await collection.insertOne(expense)
 
     res.status(201).send({

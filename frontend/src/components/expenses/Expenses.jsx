@@ -8,17 +8,37 @@ import categoryImages from "../../assets/categoryEnum";
 import DatePicker from 'react-datepicker'
 import { registerLocale, setDefaultLocale } from  "react-datepicker";
 import pt from 'date-fns/locale/pt-BR';
-import magnify from '../../assets/expenses/magnifying-glass.svg'
+import food from '../../assets/expenses/food.svg'
+import clothes from '../../assets/expenses/clothes.svg'
+import health from '../../assets/expenses/health.svg'
+import income from '../../assets/expenses/income.svg'
+import medication from '../../assets/expenses/medication.svg'
+import others from '../../assets/expenses/others.svg'
+import restaurant from '../../assets/expenses/restaurant.svg'
+import wellness from '../../assets/expenses/wellness.svg'
 import filterIcon from '../../assets/expenses/filter.svg'
 import NotFound from "../NotFound";
 import MenuExpense from "./MenuExpense";
 import Loading from "../Loading";
 import { ToastContainer, toast } from 'react-toastify';
+import validator from "validator/es";
 registerLocale('pt-BR', pt)
+
+const images = {
+    clothes,
+    food,
+    health,
+    income,
+    medication,
+    others,
+    restaurant,
+    wellness
+}
+
 
 export function getCategoryImage(imageName){
     console.log(imageName)
-    return <img className="expense-category__icon" src={`../../../src/assets/expenses/${categoryImages[imageName.toUpperCase()]}.svg`} alt={`${imageName} icon`} title={imageName}/>
+    return <img className="expense-category__icon" src={images[imageName]} alt={`${imageName} icon`} title={imageName}/>
 
 }
 export const categoryOptions = [{label:'food', value: 'food'},{label:'medication', value: 'medication'},{label:'others', value: 'others'}, {label:'wellness', value: 'wellness'}, {label:'clothes', value: 'clothes'}, {label:'restaurant', value: 'restaurant'}, {label:'health', value: 'health'}]
@@ -98,7 +118,9 @@ export default function Expenses (){
     const [expense, setExpense] = useState(initialState)
     const [filter, setFilter] = useState(initialStateFilter)
     const [filteredExpenses, setFilteredExpenses] = useState([])
+    const [isUpdating, setIsUpdating] = useState(false)
     const client = useQueryClient()
+
     const {mutate: addExpense, isLoading: createLoading} = useMutation( async (expense) => {
         return await api.post('/expenses', expense)
     }, {
@@ -123,18 +145,19 @@ export default function Expenses (){
     })
 
     const updateExpense = useMutation( async (expense) => {
-        return await api.post('/expenses/'+expense._id, expense)
+        console.log(expense)
+        return await api.patch('/expenses/'+expense._id, expense)
     }, {
         onSuccess: async () => {
             await client.invalidateQueries(["expenses"])
+            toast.success('The transaction was updated.')
+            setIsUpdating(false)
+        },
+        onError: () => {
+            toast.error('Something went bad :(')
+            setIsUpdating(false)
         }
     })
-
-
-
-
-
-
 
 
     function handleDialog(){
@@ -171,25 +194,29 @@ export default function Expenses (){
     }
 
     function createExpense(){
-
-        if(expense.name.trim().length > 0 && expense.date && expense.type?.label ){
-            if(expense.type.label === 'income'){
-                addExpense(expense)
-                setDialog(false)
-                setExpense(initialState)
-            } else if (expense.category?.label.length > 0)  {
-                addExpense(expense)
-                setDialog(false)
-                setExpense(initialState)
-            } else {
-                toast.error('Please, fill all the inputs.', )
-            }
+        console.log(expense)
+if(validator.isCurrency(expense.value, {require_symbol: false, thousands_separator: '.', decimal_separator: ','})){
+    if(expense.name.trim().length > 0 && expense.date && expense.type?.label ){
+        if(expense.type.label === 'income'){
+            isUpdating ? updateExpense.mutate(expense) :  addExpense(expense)
+            setDialog(false)
+            setExpense(initialState)
+        } else if (expense.category?.label.length > 0)  {
+            isUpdating ? updateExpense.mutate(expense) :  addExpense(expense)
+            setDialog(false)
+            setExpense(initialState)
         } else {
-            toast.error('Please, fill all the inputs.')
+            toast.error('Please, fill all the inputs.', )
         }
+    } else {
+        toast.error('Please, fill all the inputs.')
+    }
+} else {
+    toast.error('Please, only numeric values are allowed.')
+}
+
 
     }
-
 
 function getCategories(categories){
         return categories.map(el => el.label)
@@ -212,12 +239,43 @@ function deleteThisExpense(id){
         deleteExpense(id)
 }
 
+    function addHours(date, hours) {
+        date.setHours(date.getHours() + hours);
+
+        return date;
+    }
+
+function updateTransaction(transaction){
+        setDialog(true)
+    const [day, month, year] = transaction.date.split('/')
+    console.log(transaction.date)
+    const date = new Date(`${year}-${month}-${day}`)
+    const actualDate = addHours(date, 3)
+    const expense = {
+            _id: transaction._id,
+            name: transaction.name,
+            value: transaction.value.toString(),
+        category: transaction.type === 'income' ? null : {label: transaction.category, value: transaction.category},
+        date: actualDate ,
+        type: {label: transaction.type, value: transaction.type},
+        user: transaction.user
+    }
+    console.log(expense.date)
+    setExpense(expense)
+    setIsUpdating(true)
+
+    }
+
+    function updateTransactionChanges(){
+        createExpense('update')
+    }
+
 function clearDialog(){
         setExpense(initialState)
     setDialog(false)
 }
     return (
-        <>
+        <div className="transactions__view">
             <ToastContainer theme={"dark"} />
             {dialog && <div className="overlay"/>}
             <Dialog dialogState={{dialog, setDialog}} header={"Create expense"} confirmAction={createExpense} cancelAction={clearDialog} >
@@ -228,14 +286,14 @@ function clearDialog(){
                         <input type="text" maxLength={30} className="general-input form__input" value={expense.name} onChange={handleInput} placeholder="Name" name="name"/>
                     </div>
                     <div className="input-container">
-                        <input type="string" className="general-input form__input" value={expense.value} onChange={handleInput} placeholder="Value" name="value"/>
+                        <input type="text" className="general-input form__input" value={expense.value} onChange={handleInput} placeholder="Value" name="value"/>
 
                     </div>
                     <div className="input-container">
                         <Select options={typeOptions} styles={dropdownStyle} placeholder="Transaction Type" name="type" value={expense.type} onChange={(e) => handleSelect(e,'type')} />
 
                     </div>
-                    <div className={(!expense.type.label || expense.type.label === 'income')  ? 'hide' : 'input-container'} >
+                    <div className={(!expense.type?.label || expense.type?.label === 'income')  ? 'hide' : 'input-container'} >
                         <Select options={categoryOptions} styles={dropdownStyle} placeholder="Category" name="category" value={expense.category} onChange={(e) => handleSelect(e,'category')} />
 
                     </div>
@@ -282,7 +340,7 @@ function clearDialog(){
                 </div>
 
             </div>
-            { (allExpensesLoading || deleteLoading || createLoading) ? <Loading/> : <div className="expenses__container">
+            { (allExpensesLoading || deleteLoading || createLoading || updateExpense.isLoading) ? <Loading/> : <div className="expenses__container">
                 {allExpenses2?.length > 0 ? allExpenses2.map(expense => {
                     return <div className="expense__card" key={expense._id}>
                         <div>      {expense?.name}</div>
@@ -290,13 +348,13 @@ function clearDialog(){
                         <p>{expense?.date}</p>
                         <p>{Number(expense?.value).toLocaleString("pt-BR", {style: "currency", currency: "BRL"})}</p>
                         {getCategoryImage(expense?.category)}
-                        <MenuExpense deleteFunction={deleteThisExpense} expenseId={expense._id}/>
+                        <MenuExpense deleteFunction={deleteThisExpense} editFunction={updateTransaction} expense={expense} expenseId={expense._id}/>
                     </div>
 
 
                 }) : <NotFound/>}
             </div>}
         </section>
-        </>
+        </div>
     )
 }

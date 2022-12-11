@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import chevron from '../../assets/expenses/down-chevron.svg'
 
-export default function MenuExpense({deleteFunction, editFunction, expenseId}){
+export default function MenuExpense({deleteFunction, editFunction, expenseId, expense}){
     function handleMenu(e){
         if(expenseMenu.current && open && !expenseMenu.current.contains(e.target)){
             setOpen(false)
@@ -22,7 +22,7 @@ export default function MenuExpense({deleteFunction, editFunction, expenseId}){
         <>
             <img className={"menu-indicator"} onClick={() => setOpen(true)} src={chevron}/>
         <div className={open ? "card__menu card__menu-open" : "card__menu" } ref={expenseMenu}>
-            <span>Edit</span>
+            <span onClick={() => editFunction(expense)}>Edit</span>
             <span onClick={() => deleteFunction(expenseId)}>Delete</span>
         </div>
         </>

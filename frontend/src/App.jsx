@@ -5,33 +5,21 @@ import Navbar from "./components/navbar/Navbar";
 import About from "./components/about/About";
 import Expenses from "./components/expenses/Expenses";
 import Dashboard from "./components/dashboard/Dashboard";
+import {createContext, useEffect, useState} from "react";
+import {useQuery} from "@tanstack/react-query";
+import api from "./api/api.js";
+import AppRoutes from "./Routes.jsx";
 
-const WithoutNav = () => <Outlet/>
-const WithNav = () => {
-    return (
-        <>
-            <Navbar />
-            <Outlet />
-        </>
-    )
-}
+
+
+
+export const UserContext = createContext({})
 function App() {
-  const location = useLocation()
-  console.log(location.pathname.includes('login'))
+
+
+
   return (
-      <>
-          <Routes>
-              <Route element={<WithoutNav />}>
-                  <Route path="/login" element={<Login />} />
-              </Route>
-              <Route element={<WithNav />}>
-                  <Route path="/home" element={<Home />} />
-                  <Route path="/about" element={<About />} />
-                  <Route path="/expenses" element={<Expenses />} />
-                  <Route path="/dashboard" element={<Dashboard />} />
-              </Route>
-          </Routes>
-      </>
+        <AppRoutes/>
   )
 }
 

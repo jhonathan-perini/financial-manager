@@ -10,7 +10,7 @@
 }
 
 .login__form--container {
-  width: max(30rem, 25%);
+  width: max(50rem, 25%);
   max-width: 50rem;
   background-color: var(--form-bg-color);
   box-shadow: 0 4px 10px 0 rgba(87,87,87,0.50);
@@ -42,6 +42,7 @@
   color: white;
   font-family: "October Crow", sans-serif;
   margin-bottom: 3rem;
+  font-size: 3rem;
 }
 
 .login__button{
@@ -75,6 +76,7 @@
   transition: all 0.3s ease;
   cursor: pointer;
   margin-block: 3rem;
+  text-align: center;
 }
 
 .login__button-footer:hover{
@@ -85,6 +87,7 @@
   color: white;
   font-family: "October Crow", sans-serif;
   margin-top: 4rem;
+  font-size: 3rem;
 }
 
 .login__form--footer-text{
@@ -94,6 +97,34 @@
   text-align: center;
   padding-inline: 4rem;
   line-height: 3.5rem;
+  font-size: 2rem;
+}
+
+.error_dialog{
+  font-size: 2.5rem;
+  color: white;
+  text-align: center;
+  font-family: "Hallowen inline", sans-serif;
+  display: flex;
+  flex-direction: column;
+
+}
+
+.error_dialog > span{
+ margin-block: 2rem
+}
+
+.login__wrapper .cancel__button {
+  display: none;
+}
+.login__wrapper .dialog__footer {
+  justify-content: center;
+  margin-right: 0;
+}
+.rip__image{
+  width: 15rem;
+  align-self: center;
+
 }
 
 
