@@ -29,12 +29,14 @@ export default function AppRoutes(){
         <Routes>
             {!sessionData.email && <Route element={<WithoutNav/>}>
                 <Route path="/" element={<Login/>}/>
+                <Route path="*" element={<Login/>}/>
             </Route>}
             {sessionData.email && <Route element={<WithNav/>}>
                 <Route path="/" element={<Home/>}/>
                 <Route path="/about" element={<About/>}/>
                 <Route path="/expenses" element={<Expenses/>}/>
                 <Route path="/dashboard" element={<Dashboard/>}/>
+                <Route path="*" element={<Home/>}/>
             </Route>}
         </Routes>
     )

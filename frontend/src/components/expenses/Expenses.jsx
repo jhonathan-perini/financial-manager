@@ -91,7 +91,7 @@ const dropdownStyle = {
     singleValue: (provided) => ({
         ...provided,
         color: '#FFF',
-
+        fontSize: '1.6rem'
     }),
 
 
